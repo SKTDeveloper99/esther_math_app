@@ -1,0 +1,187 @@
+{
+  "project_info": {
+    "project_number": "257978860729",
+    "firebase_url": "https://khoatrancodingminds-default-rtdb.firebaseio.com",
+    "project_id": "khoatrancodingminds",
+    "storage_bucket": "khoatrancodingminds.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:257978860729:android:a7ad6ca209e41dfca38768",
+        "android_client_info": {
+          "package_name": "com.codingminds.medical_app_belinda_full"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "257978860729-jomakviqkf4p3of30jcjqf048ld2tpsh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.codingminds.medical_app_belinda_full",
+            "certificate_hash": "95854941b3d1fe8aaeed8749a85caeb8d0b23570"
+          }
+        },
+        {
+          "client_id": "257978860729-kumj4ifb2jfgqujuhohu153djuv4322i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.codingminds.medical_app_belinda_full",
+            "certificate_hash": "825f083a815da5a2e52e65c3eccf7d661a44bae4"
+          }
+        },
+        {
+          "client_id": "257978860729-saribdon0pi1mdujag4d1s37flg693a3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.codingminds.medical_app_belinda_full",
+            "certificate_hash": "9bbb3186b2189ef16d8f272bdab59362c395cbb4"
+          }
+        },
+        {
+          "client_id": "257978860729-85cp72b4jh1ahc72285jri001khqbvk2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4JirS3CzjGEx3rWOTXic5RFkO3Hqiv_U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "257978860729-85cp72b4jh1ahc72285jri001khqbvk2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "257978860729-apcch6lj0390ikpcq7ur5had4ijqlq72.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mycompany.travelexamplestarter"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:257978860729:android:51e6281606d7e9aca38768",
+        "android_client_info": {
+          "package_name": "com.esthersoftware.esther_math_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "257978860729-85cp72b4jh1ahc72285jri001khqbvk2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4JirS3CzjGEx3rWOTXic5RFkO3Hqiv_U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "257978860729-85cp72b4jh1ahc72285jri001khqbvk2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "257978860729-apcch6lj0390ikpcq7ur5had4ijqlq72.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mycompany.travelexamplestarter"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:257978860729:android:f9d161f3e0e8e3e5a38768",
+        "android_client_info": {
+          "package_name": "com.mycompany.travelexamplestarter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "257978860729-85cp72b4jh1ahc72285jri001khqbvk2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4JirS3CzjGEx3rWOTXic5RFkO3Hqiv_U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "257978860729-85cp72b4jh1ahc72285jri001khqbvk2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "257978860729-apcch6lj0390ikpcq7ur5had4ijqlq72.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mycompany.travelexamplestarter"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:257978860729:android:7173b6ff3a2e3cd2a38768",
+        "android_client_info": {
+          "package_name": "com.topsesther.smartReviewer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "257978860729-h9i3ishb31gtmkh5fp8ckhdjss354435.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.topsesther.smartReviewer",
+            "certificate_hash": "9bbb3186b2189ef16d8f272bdab59362c395cbb4"
+          }
+        },
+        {
+          "client_id": "257978860729-85cp72b4jh1ahc72285jri001khqbvk2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4JirS3CzjGEx3rWOTXic5RFkO3Hqiv_U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "257978860729-85cp72b4jh1ahc72285jri001khqbvk2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "257978860729-apcch6lj0390ikpcq7ur5had4ijqlq72.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mycompany.travelexamplestarter"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
