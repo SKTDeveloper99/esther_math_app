@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:esther_math_app/classes/users.dart';
 import 'package:esther_math_app/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -37,6 +39,7 @@ class ScaffoldSnackbar {
       );
   }
 }
+
 
 /// The mode of the current auth session, either [AuthMode.login] or [AuthMode.register].
 // ignore: public_member_api_docs
@@ -180,6 +183,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       ? null
                                       : 'Required',
                                 ),
+                                const SizedBox(height: 20),
                               ],
                             ),
                           if (mode == AuthMode.phone)
@@ -239,32 +243,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           )
                               .toList(),
-                          // SizedBox(
-                          //   width: double.infinity,
-                          //   height: 50,
-                          //   child: OutlinedButton(
-                          //     onPressed: isLoading
-                          //         ? null
-                          //         : () {
-                          //             if (mode != AuthMode.phone) {
-                          //               setState(() {
-                          //                 mode = AuthMode.phone;
-                          //               });
-                          //             } else {
-                          //               setState(() {
-                          //                 mode = AuthMode.login;
-                          //               });
-                          //             }
-                          //           },
-                          //     child: isLoading
-                          //         ? const CircularProgressIndicator.adaptive()
-                          //         : Text(
-                          //             mode != AuthMode.phone
-                          //                 ? 'Sign in with Phone Number'
-                          //                 : 'Sign in with Email and Password',
-                          //           ),
-                          //   ),
-                          // ),
                           const SizedBox(height: 20),
                           if (mode != AuthMode.phone)
                             RichText(
@@ -294,20 +272,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                           const SizedBox(height: 10),
-                          // RichText(
-                          //   text: TextSpan(
-                          //     style: Theme.of(context).textTheme.bodyLarge,
-                          //     children: [
-                          //       const TextSpan(text: 'Or '),
-                          //       TextSpan(
-                          //         text: 'continue as guest',
-                          //         style: const TextStyle(color: Colors.blue),
-                          //         recognizer: TapGestureRecognizer()
-                          //           ..onTap = _anonymousAuth,
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
                         ],
                       ),
                     ),
@@ -446,7 +410,27 @@ class _LoginScreenState extends State<LoginScreen> {
         await auth.createUserWithEmailAndPassword(
           email: emailController.text,
           password: passwordController.text,
-        );
+        ).then((value) {
+          final data = Users(
+            age: null,
+            dob: null,
+            favBooks: [],
+            favProblems: [],
+            favMathematicians: [],
+            mistakeCollections: [],
+            preferredSubjects: [],
+            posts: [],
+            pronouns: null,
+            gender: null,
+            motto: null,
+            selfIntro:null,
+          );
+          final userRef = FirebaseFirestore.instance.collection('user')
+              .withConverter(
+            fromFirestore: Users.fromFirestore, toFirestore: (Users user, _) => user.toFirestore(),)
+              .doc(value.user!.uid);
+          userRef.set(data);
+        });
       } else {
         await _phoneAuth();
       }
@@ -525,15 +509,6 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  Future<void> _signInWithTwitter() async {
-    TwitterAuthProvider twitterProvider = TwitterAuthProvider();
-
-    if (kIsWeb) {
-      await auth.signInWithPopup(twitterProvider);
-    } else {
-      await auth.signInWithProvider(twitterProvider);
-    }
-  }
 
   Future<void> _signInWithApple() async {
     final appleProvider = AppleAuthProvider();

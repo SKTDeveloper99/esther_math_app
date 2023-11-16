@@ -1,4 +1,6 @@
-import 'package:esther_math_app/auth/auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:esther_math_app/classes/users.dart';
+import 'package:esther_math_app/firebase/auth/auth.dart';
 import 'package:esther_math_app/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +25,7 @@ class _ProfilePageState extends State<ProfilePage> {
   late User user;
   late TextEditingController controller;
   final phoneController = TextEditingController();
+  late final DocumentReference<Users> userRef;
 
   String? photoURL;
 
@@ -30,11 +33,15 @@ class _ProfilePageState extends State<ProfilePage> {
   bool isLoading = false;
 
   @override
-  void initState() {
+  void initState(){
     user = auth.currentUser!;
+    userRef = cloudFirestore.collection("user").doc(user.uid).withConverter(
+      fromFirestore: Users.fromFirestore,
+      toFirestore: (Users user, _) => user.toFirestore(),
+    );
     controller = TextEditingController(text: user.displayName);
-
     controller.addListener(_onNameChanged);
+
 
     auth.userChanges().listen((event) {
       if (event != null && mounted) {
@@ -50,7 +57,6 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void dispose() {
     controller.removeListener(_onNameChanged);
-
     super.dispose();
   }
 
@@ -84,138 +90,207 @@ class _ProfilePageState extends State<ProfilePage> {
     ScaffoldSnackbar.of(context).show('Name updated');
   }
 
+
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: FocusScope.of(context).unfocus,
-      child: Scaffold(
-        body: Stack(
-          children: [
-            Center(
-              child: SizedBox(
-                width: 400,
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Stack(
-                        children: [
-                          CircleAvatar(
-                            maxRadius: 90,
-                            backgroundImage: NetworkImage(
-                              user.photoURL ?? placeholderImage,
-                            ),
-                          ),
-                          Positioned.directional(
-                            textDirection: Directionality.of(context),
-                            end: 0,
-                            bottom: 0,
-                            child: Material(
-                              clipBehavior: Clip.antiAlias,
-                              color: Theme.of(context).colorScheme.secondary,
-                              borderRadius: BorderRadius.circular(40),
-                              child: InkWell(
-                                onTap: () async {
-                                  final photoURL = await getPhotoURLFromUser();
-
-                                  if (photoURL != null) {
-                                    await user.updatePhotoURL(photoURL);
-                                  }
-                                },
-                                radius: 50,
-                                child: const SizedBox(
-                                  width: 35,
-                                  height: 35,
-                                  child: Icon(Icons.edit),
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      TextField(
-                        style: const TextStyle(
-                          fontSize: 40,
-                        ),
-                        textAlign: TextAlign.center,
-                        controller: controller,
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          floatingLabelBehavior: FloatingLabelBehavior.never,
-                          alignLabelWithHint: true,
-                          label: Center(
-                            child: SizedBox(
-                              child: Text(
-                                style: TextStyle(
-                                  fontSize: 20,
-                                ),
-                                'Click to add a display name',
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Text(
-                        user.email ?? user.phoneNumber ?? 'User',
-                        style: const TextStyle(
-                          fontSize: 20,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
+    return StreamBuilder(
+      stream: userRef.snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: Text(snapshot.error.toString()),
+          );
+        }
+        if (!snapshot.hasData) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        final data = snapshot.requireData;
+        return GestureDetector(
+          onTap: FocusScope.of(context).unfocus,
+          child: Scaffold(
+            body: Stack(
+              children: [
+                Center(
+                  child: SizedBox(
+                    width: 400,
+                    child: SingleChildScrollView(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          if (userProviders.contains('phone'))
-                            const Icon(Icons.phone),
-                          if (userProviders.contains('password'))
-                            const Icon(
-                              Icons.mail,
-                              size: 35,
+                          Stack(
+                            children: [
+                              CircleAvatar(
+                                maxRadius: 90,
+                                backgroundImage: NetworkImage(
+                                  user.photoURL ?? placeholderImage,
+                                ),
+                              ),
+                              Positioned.directional(
+                                textDirection: Directionality.of(context),
+                                end: 0,
+                                bottom: 0,
+                                child: Material(
+                                  clipBehavior: Clip.antiAlias,
+                                  color: Theme.of(context).colorScheme.secondary,
+                                  borderRadius: BorderRadius.circular(40),
+                                  child: InkWell(
+                                    onTap: () async {
+                                      final photoURL = await getPhotoURLFromUser();
+
+                                      if (photoURL != null) {
+                                        await user.updatePhotoURL(photoURL);
+                                      }
+                                    },
+                                    radius: 50,
+                                    child: const SizedBox(
+                                      width: 35,
+                                      height: 35,
+                                      child: Icon(Icons.edit),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          TextField(
+                            style: const TextStyle(
+                              fontSize: 40,
                             ),
-                          if (userProviders.contains('google.com'))
-                            SizedBox(
-                              width: 24,
-                              child: Image.network(
-                                'https://upload.wikimedia.org/wikipedia/commons/0/09/IOS_Google_icon.png',
+                            textAlign: TextAlign.center,
+                            controller: controller,
+                            decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              floatingLabelBehavior: FloatingLabelBehavior.never,
+                              alignLabelWithHint: true,
+                              label: Center(
+                                child: SizedBox(
+                                  child: Text(
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                    ),
+                                    'Click to add a display name',
+                                  ),
+                                ),
                               ),
                             ),
+                          ),
+                          Text(
+                            user.email ?? user.phoneNumber ?? 'User',
+                            style: const TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              if (userProviders.contains('phone'))
+                                const Icon(Icons.phone),
+                              if (userProviders.contains('password'))
+                                const Icon(
+                                  Icons.mail,
+                                  size: 35,
+                                ),
+                              if (userProviders.contains('google.com'))
+                                SizedBox(
+                                  width: 24,
+                                  child: Image.network(
+                                    'https://upload.wikimedia.org/wikipedia/commons/0/09/IOS_Google_icon.png',
+                                  ),
+                                ),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          const Divider(),
+                          Text(
+                            "Gender: ${data.data()!.gender}",
+                            style: const TextStyle(
+                              fontSize: 17,
+                            ),
+                          ),
+                          Text(
+                            "Age: ${data.data()!.age}",
+                            style: const TextStyle(
+                              fontSize: 17,
+                            ),
+                          ),
+                          Text(
+                            "Date Of Birth: ${data.data()!.dob}",
+                            style: const TextStyle(
+                              fontSize: 17,
+                            ),
+                          ),
+                          Text(
+                            "Motto: ${data.data()!.motto}",
+                            style: const TextStyle(
+                              fontSize: 17,
+                            ),
+                          ),
+                          const Divider(),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height/8,
+                            child: data.data()!.favMathematicians!.isEmpty ? Center(child: Text('Empty')):ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: data.data()!.favMathematicians!.length,
+                              prototypeItem: Card(
+                                  child: Row(
+                                    children: [
+                                      Text(data.data()!.favMathematicians!.first),
+                                    ],
+                                  ),
+                              ),
+                              itemBuilder: (context,index) {
+                                String mathDude = data.data()!.favMathematicians![index];
+                                return Card(
+                                    child: Row(
+                                      children: [
+                                        Expanded(child: Text(mathDude)),
+                                      ],
+                                    )
+                                );
+                              }
+                            ),
+                          ),
+                          const Divider(),
+                          const Text(
+                              "Favorite Problems: "
+                          ),
+                          const Divider(),
+                          TextButton(
+                            onPressed: _signOut,
+                            child: const Text(
+                              'Sign out',
+                              style: TextStyle(
+                                fontSize: 20,
+                              ),
+                            ),
+                          ),
+                          const Divider(),
                         ],
                       ),
-                      const SizedBox(height: 20),
-                      const Divider(),
-                      TextButton(
-                        onPressed: _signOut,
-                        child: const Text(
-                          'Sign out',
-                          style: TextStyle(
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-                      const Divider(),
-                    ],
+                    ),
                   ),
                 ),
-              ),
+                Positioned.directional(
+                  textDirection: Directionality.of(context),
+                  end: 40,
+                  top: 40,
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 200),
+                    child: !showSaveButton
+                        ? SizedBox(key: UniqueKey())
+                        : TextButton(
+                      onPressed: isLoading ? null : updateDisplayName,
+                      child: const Text('Save changes'),
+                    ),
+                  ),
+                )
+              ],
             ),
-            Positioned.directional(
-              textDirection: Directionality.of(context),
-              end: 40,
-              top: 40,
-              child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 200),
-                child: !showSaveButton
-                    ? SizedBox(key: UniqueKey())
-                    : TextButton(
-                  onPressed: isLoading ? null : updateDisplayName,
-                  child: const Text('Save changes'),
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
+          ),
+        );
+      }
     );
   }
 

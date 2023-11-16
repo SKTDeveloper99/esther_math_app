@@ -1,12 +1,15 @@
-import 'package:esther_math_app/auth/auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:esther_math_app/firebase/auth/auth.dart';
 import 'package:esther_math_app/firebase_options.dart';
 import 'package:esther_math_app/navigation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 late final FirebaseApp app;
 late final FirebaseAuth auth;
+late final FirebaseFirestore cloudFirestore;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,8 +17,10 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   auth = FirebaseAuth.instanceFor(app: app);
+  cloudFirestore = FirebaseFirestore.instanceFor(app: app);
   runApp(const MyApp());
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -23,7 +28,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Firebase Example App',
+      title: 'Esther Math App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.green),
       home: Scaffold(

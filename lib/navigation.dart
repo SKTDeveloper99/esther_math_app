@@ -1,6 +1,7 @@
-import 'package:esther_math_app/explore_page.dart';
+import 'package:esther_math_app/pages/explore/explore_page.dart';
 import 'package:esther_math_app/profile/profile_page.dart';
-import 'package:esther_math_app/test_everything.dart';
+import 'package:esther_math_app/profile1.dart';
+import 'package:esther_math_app/subjects/test_everything.dart';
 import 'package:flutter/material.dart';
 
 class MyHomePage extends StatefulWidget {
